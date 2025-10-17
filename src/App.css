@@ -1,0 +1,344 @@
+:root {
+  /* Beautiful Light Aesthetic Theme (Default) */
+  --bg-primary: #fafafa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8f9fa;
+  --bg-card: #ffffff;
+  --bg-elevated: #f1f3f4;
+  
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-accent: #374151;
+  
+  --accent-primary: #8b5cf6;
+  --accent-secondary: #a78bfa;
+  --accent-tertiary: #c4b5fd;
+  --accent-hover: #7c3aed;
+  --accent-glow: rgba(139, 92, 246, 0.15);
+  
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+  
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  --border-accent: rgba(139, 92, 246, 0.15);
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+  --shadow-accent: 0 4px 20px rgba(139, 92, 246, 0.15);
+  
+  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  --gradient-secondary: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  --gradient-card: linear-gradient(135deg, #ffffff 0%, #f1f3f4 100%);
+  --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 100%);
+  
+  --blur-glass: blur(12px);
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 20px;
+
+  /* Font Size Variables */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+}
+
+[data-theme="dark"] {
+  /* Beautiful Dark Aesthetic Theme */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  --bg-card: #1e1e1e;
+  --bg-elevated: #252525;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #b4b4b4;
+  --text-muted: #888888;
+  --text-accent: #e4e4e7;
+  
+  --accent-primary: #8b5cf6;
+  --accent-secondary: #a78bfa;
+  --accent-tertiary: #c4b5fd;
+  --accent-hover: #7c3aed;
+  --accent-glow: rgba(139, 92, 246, 0.3);
+  
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+  
+  --border-primary: #333333;
+  --border-secondary: #404040;
+  --border-accent: rgba(139, 92, 246, 0.2);
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-accent: 0 4px 20px rgba(139, 92, 246, 0.2);
+  
+  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  --gradient-secondary: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  --gradient-card: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+  --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 100%);
+  
+  --blur-glass: blur(12px);
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 20px;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+  background: var(--bg-primary);
+  transition: all 0.3s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  height: 100%;
+}
+
+.dashboard-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 0.75rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+}
+
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.mobile-open {
+    left: 0;
+  }
+
+  .main-content {
+    padding: 1rem;
+    padding-top: 4rem;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .mobile-overlay.active {
+    display: block;
+  }
+
+  .dashboard-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.75rem;
+    padding-top: 3.5rem;
+  }
+
+  .dashboard-content {
+    gap: 0.75rem;
+  }
+}
+
+/* Font Size Themes */
+[data-font-size="small"] {
+  --font-size-xs: 0.625rem;
+  --font-size-sm: 0.75rem;
+  --font-size-base: 0.875rem;
+  --font-size-lg: 1rem;
+  --font-size-xl: 1.125rem;
+  --font-size-2xl: 1.25rem;
+  --font-size-3xl: 1.5rem;
+}
+
+[data-font-size="medium"] {
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+}
+
+[data-font-size="large"] {
+  --font-size-xs: 0.875rem;
+  --font-size-sm: 1rem;
+  --font-size-base: 1.125rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.375rem;
+  --font-size-2xl: 1.625rem;
+  --font-size-3xl: 2rem;
+}
+
+[data-font-size="extra-large"] {
+  --font-size-xs: 1rem;
+  --font-size-sm: 1.125rem;
+  --font-size-base: 1.25rem;
+  --font-size-lg: 1.375rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 1.75rem;
+  --font-size-3xl: 2.25rem;
+}
+
+/* Color Themes */
+[data-color-theme="sunset"] {
+  --accent-primary: #f97316;
+  --accent-secondary: #fb923c;
+  --accent-tertiary: #fdba74;
+  --accent-hover: #ea580c;
+  --accent-glow: rgba(249, 115, 22, 0.15);
+  --gradient-primary: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  --gradient-accent: linear-gradient(135deg, #f97316 0%, #fdba74 100%);
+  --shadow-accent: 0 4px 20px rgba(249, 115, 22, 0.15);
+}
+
+[data-color-theme="forest"] {
+  --accent-primary: #22c55e;
+  --accent-secondary: #4ade80;
+  --accent-tertiary: #86efac;
+  --accent-hover: #16a34a;
+  --accent-glow: rgba(34, 197, 94, 0.15);
+  --gradient-primary: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+  --gradient-accent: linear-gradient(135deg, #22c55e 0%, #86efac 100%);
+  --shadow-accent: 0 4px 20px rgba(34, 197, 94, 0.15);
+}
+
+[data-color-theme="lavender"] {
+  --accent-primary: #a855f7;
+  --accent-secondary: #c084fc;
+  --accent-tertiary: #ddd6fe;
+  --accent-hover: #9333ea;
+  --accent-glow: rgba(168, 85, 247, 0.15);
+  --gradient-primary: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
+  --gradient-accent: linear-gradient(135deg, #a855f7 0%, #ddd6fe 100%);
+  --shadow-accent: 0 4px 20px rgba(168, 85, 247, 0.15);
+}
+
+[data-color-theme="rose"] {
+  --accent-primary: #ec4899;
+  --accent-secondary: #f472b6;
+  --accent-tertiary: #fbcfe8;
+  --accent-hover: #db2777;
+  --accent-glow: rgba(236, 72, 153, 0.15);
+  --gradient-primary: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+  --gradient-accent: linear-gradient(135deg, #ec4899 0%, #fbcfe8 100%);
+  --shadow-accent: 0 4px 20px rgba(236, 72, 153, 0.15);
+}
+
+[data-color-theme="midnight"] {
+  --accent-primary: #1e40af;
+  --accent-secondary: #3b82f6;
+  --accent-tertiary: #93c5fd;
+  --accent-hover: #1d4ed8;
+  --accent-glow: rgba(30, 64, 175, 0.15);
+  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  --gradient-accent: linear-gradient(135deg, #1e40af 0%, #93c5fd 100%);
+  --shadow-accent: 0 4px 20px rgba(30, 64, 175, 0.15);
+}
+
+/* Apply font sizes to elements */
+body, .app {
+  font-size: var(--font-size-base);
+}
+
+h1 { font-size: var(--font-size-3xl); }
+h2 { font-size: var(--font-size-2xl); }
+h3 { font-size: var(--font-size-xl); }
+h4 { font-size: var(--font-size-lg); }
+p, span, div { font-size: var(--font-size-base); }
+small { font-size: var(--font-size-sm); }
+
+@media (max-width: 768px) {
+  h1 { font-size: var(--font-size-2xl); }
+  h2 { font-size: var(--font-size-xl); }
+  h3 { font-size: var(--font-size-lg); }
+}
+
+/* Loading styles */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.loading-spinner {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+}

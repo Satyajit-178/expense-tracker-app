@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .success {
+            background: #28a745;
+        }
+        .danger {
+            background: #dc3545;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .response {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Expense Tracker API Test Interface</h1>
+    
+    <div class="container">
+        <h2>Server Status</h2>
+        <button onclick="checkHealth()">Check Health</button>
+        <div id="healthResponse" class="response"></div>
+    </div>
+
+    <div class="grid">
+        <div class="container">
+            <h2>Categories</h2>
+            <button onclick="getCategories()">Get All Categories</button>
+            <button onclick="getStats()">Get Statistics</button>
+            
+            <h3>Create Category</h3>
+            <div class="form-group">
+                <input type="text" id="categoryName" placeholder="Category Name" required>
+            </div>
+            <div class="form-group">
+                <input type="color" id="categoryColor" value="#3B82F6">
+            </div>
+            <button onclick="createCategory()">Create Category</button>
+            
+            <div id="categoryResponse" class="response"></div>
+        </div>
+
+        <div class="container">
+            <h2>Expenses</h2>
+            <button onclick="getExpenses()">Get All Expenses</button>
+            
+            <h3>Create Expense</h3>
+            <div class="form-group">
+                <input type="text" id="expenseTitle" placeholder="Expense Title" required>
+            </div>
+            <div class="form-group">
+                <input type="number" id="expenseAmount" placeholder="Amount" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <select id="expenseCategory" required>
+                    <option value="">Select Category</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="date" id="expenseDate" required>
+            </div>
+            <div class="form-group">
+                <textarea id="expenseDescription" placeholder="Description (optional)"></textarea>
+            </div>
+            <button onclick="createExpense()">Create Expense</button>
+            
+            <div id="expenseResponse" class="response"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:4000/api';
+        
+        // Set today's date as default
+        document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+        
+        async function makeRequest(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+                const data = await response.json();
+                return { status: response.status, data };
+            } catch (error) {
+                return { status: 0, data: { success: false, message: error.message } };
+            }
+        }
+        
+        function displayResponse(elementId, response) {
+            const element = document.getElementById(elementId);
+            element.textContent = JSON.stringify(response, null, 2);
+            element.style.color = response.data.success ? '#28a745' : '#dc3545';
+        }
+        
+        async function checkHealth() {
+            const response = await makeRequest('http://localhost:4000/health');
+            displayResponse('healthResponse', response);
+        }
+        
+        async function getCategories() {
+            const response = await makeRequest(`${API_BASE}/categories`);
+            displayResponse('categoryResponse', response);
+            
+            // Populate category dropdown
+            if (response.data.success) {
+                const select = document.getElementById('expenseCategory');
+                select.innerHTML = '<option value="">Select Category</option>';
+                response.data.data.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    select.appendChild(option);
+                });
+            }
+        }
+        
+        async function createCategory() {
+            const name = document.getElementById('categoryName').value;
+            const color = document.getElementById('categoryColor').value;
+            
+            if (!name) {
+                alert('Category name is required');
+                return;
+            }
+            
+            const response = await makeRequest(`${API_BASE}/categories`, {
+                method: 'POST',
+                body: JSON.stringify({ name, color })
+            });
+            
+            displayResponse('categoryResponse', response);
+            
+            if (response.data.success) {
+                document.getElementById('categoryName').value = '';
+                document.getElementById('categoryColor').value = '#3B82F6';
+                getCategories(); // Refresh categories
+            }
+        }
+        
+        async function getExpenses() {
+            const response = await makeRequest(`${API_BASE}/expenses`);
+            displayResponse('expenseResponse', response);
+        }
+        
+        async function createExpense() {
+            const title = document.getElementById('expenseTitle').value;
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+            const category_id = parseInt(document.getElementById('expenseCategory').value);
+            const date = document.getElementById('expenseDate').value;
+            const description = document.getElementById('expenseDescription').value;
+            
+            if (!title || !amount || !category_id || !date) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const response = await makeRequest(`${API_BASE}/expenses`, {
+                method: 'POST',
+                body: JSON.stringify({ title, amount, category_id, date, description })
+            });
+            
+            displayResponse('expenseResponse', response);
+            
+            if (response.data.success) {
+                document.getElementById('expenseTitle').value = '';
+                document.getElementById('expenseAmount').value = '';
+                document.getElementById('expenseCategory').value = '';
+                document.getElementById('expenseDescription').value = '';
+                document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+            }
+        }
+        
+        async function getStats() {
+            const response = await makeRequest(`${API_BASE}/stats`);
+            displayResponse('categoryResponse', response);
+        }
+        
+        // Load categories on page load
+        window.onload = function() {
+            getCategories();
+            checkHealth();
+        };
+    </script>
+</body>
+</html>
