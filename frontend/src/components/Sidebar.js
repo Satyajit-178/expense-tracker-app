@@ -42,6 +42,10 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileOpen, onMobileClose }) => {
                     );
                 })}
             </nav>
+            
+            <div className="sidebar-footer">
+                <p>Developed by Satyajit and Subham</p>
+            </div>
         </div>
     );
 };
