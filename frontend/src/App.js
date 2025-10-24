@@ -54,7 +54,7 @@ function AppContent() {
         return localStorage.getItem('colorTheme') || 'default';
     });
     const [expenses, setExpenses] = useState([]);
-    const API_BASE_URL = 'http://localhost:4000/api';
+    const API_BASE_URL = 'https://expense-tracker-app-backend-67au.onrender.com/api';
 
     // Load expenses when token is available
     useEffect(() => {
