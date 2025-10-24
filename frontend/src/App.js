@@ -11,23 +11,11 @@ import './App.css';
 
 function AppContent() {
     const { user, loading, token, logout } = useAuth();
-
-    if (loading) {
-        return (
-            <div className="loading-container">
-                <div className="loading-spinner">Loading...</div>
-            </div>
-        );
-    }
-
-    if (!user || !token) {
-        return <Login />;
-    }
     const [activeTab, setActiveTab] = useState('Dashboard');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(() => {
         const saved = localStorage.getItem('darkMode');
-        return saved ? JSON.parse(saved) : false; // Default to light mode
+        return saved ? JSON.parse(saved) : false;
     });
     const [currency, setCurrency] = useState(() => {
         return localStorage.getItem('currency') || 'INR';
@@ -36,17 +24,13 @@ function AppContent() {
         const saved = localStorage.getItem('monthlyBudget');
         return saved ? parseFloat(saved) : 0;
     });
-    const [userProfile, setUserProfile] = useState(user || {
-        name: 'User',
-        email: 'user@email.com',
-        profilePicture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=User&backgroundColor=b6e3f4'
+    const [userProfile, setUserProfile] = useState(() => {
+        return user || {
+            name: 'User',
+            email: 'user@email.com',
+            profilePicture: 'https://api.dicebear.com/7.x/avataaars/svg?seed=User&backgroundColor=b6e3f4'
+        };
     });
-
-    useEffect(() => {
-        if (user) {
-            setUserProfile(user);
-        }
-    }, [user]);
     const [fontSize, setFontSize] = useState(() => {
         return localStorage.getItem('fontSize') || 'medium';
     });
@@ -56,14 +40,18 @@ function AppContent() {
     const [expenses, setExpenses] = useState([]);
     const API_BASE_URL = 'https://expense-tracker-app-backend-67au.onrender.com/api';
 
-    // Load expenses when token is available
+    useEffect(() => {
+        if (user) {
+            setUserProfile(user);
+        }
+    }, [user]);
+
     useEffect(() => {
         if (token) {
             fetchExpenses();
         }
     }, [token]);
 
-    // Dark mode effect
     useEffect(() => {
         localStorage.setItem('darkMode', JSON.stringify(darkMode));
         if (darkMode) {
@@ -73,28 +61,23 @@ function AppContent() {
         }
     }, [darkMode]);
 
-    // Currency effect
     useEffect(() => {
         localStorage.setItem('currency', currency);
     }, [currency]);
 
-    // Budget effect
     useEffect(() => {
         localStorage.setItem('monthlyBudget', monthlyBudget.toString());
     }, [monthlyBudget]);
 
-    // User profile effect
     useEffect(() => {
         localStorage.setItem('userProfile', JSON.stringify(userProfile));
     }, [userProfile]);
 
-    // Font size effect
     useEffect(() => {
         localStorage.setItem('fontSize', fontSize);
         document.documentElement.setAttribute('data-font-size', fontSize);
     }, [fontSize]);
 
-    // Color theme effect
     useEffect(() => {
         localStorage.setItem('colorTheme', colorTheme);
         document.documentElement.setAttribute('data-color-theme', colorTheme);
@@ -188,7 +171,7 @@ function AppContent() {
 
             const data = await response.json();
             if (data.success) {
-                fetchExpenses(); // Refresh the list
+                fetchExpenses();
             }
         } catch (error) {
             console.error('Error adding expense:', error);
@@ -204,7 +187,7 @@ function AppContent() {
 
             const data = await response.json();
             if (data.success) {
-                fetchExpenses(); // Refresh the list
+                fetchExpenses();
             }
         } catch (error) {
             console.error('Error deleting expense:', error);
@@ -244,7 +227,7 @@ function AppContent() {
 
             const data = await response.json();
             if (data.success) {
-                fetchExpenses(); // Refresh the list
+                fetchExpenses();
             }
         } catch (error) {
             console.error('Error updating expense:', error);
@@ -288,6 +271,18 @@ function AppContent() {
         setIsMobileMenuOpen(false);
     };
 
+    if (loading) {
+        return (
+            <div className="loading-container">
+                <div className="loading-spinner">Loading...</div>
+            </div>
+        );
+    }
+
+    if (!user || !token) {
+        return <Login />;
+    }
+
     return (
         <div className={`app ${darkMode ? 'dark-mode' : ''}`}>
             <button className="mobile-menu-toggle" onClick={toggleMobileMenu}>
@@ -306,7 +301,6 @@ function AppContent() {
         </div>
     );
 }
-
 
 function App() {
     return (
