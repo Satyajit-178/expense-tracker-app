@@ -1,13 +1,22 @@
 const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
 const path = require('path');
 
+// Ensure 'data' directory exists (Render doesn't persist local folders)
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir);
+}
+
+// Create database path
+const dbPath = path.join(dataDir, 'expense_tracker.db');
+
 // Create database connection
-const dbPath = path.join(__dirname, 'data', 'expense_tracker.db');
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error('Error opening database:', err.message);
+        console.error('❌ Error opening database:', err.message);
     } else {
-        console.log('Connected to SQLite database');
+        console.log('✅ Connected to the SQLite database.');
         initializeDatabase();
     }
 });
